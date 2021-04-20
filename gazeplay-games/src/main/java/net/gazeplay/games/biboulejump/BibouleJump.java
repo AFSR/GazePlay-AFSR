@@ -36,7 +36,10 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Scanner;
 
 /**
  * Welcome to the Biboule Jump source code. I would advise you to stay away from it, I myself, the creator would much
@@ -128,7 +131,6 @@ public class BibouleJump extends AnimationTimer implements GameLifeCycle {
         foregroundLayer.getChildren().add(scoreText);
 
         // Menu
-        final int fixationLength = config.getFixationLength();
 
         shade = new Rectangle(0, 0, dimensions.getWidth(), dimensions.getHeight());
         shade.setFill(new Color(0, 0, 0, 0.75));
@@ -140,7 +142,7 @@ public class BibouleJump extends AnimationTimer implements GameLifeCycle {
         restartButton.setImage(restartImage);
         restartButton.setLayoutX(dimensions.getWidth() / 2 - dimensions.getHeight() / 12);
         restartButton.setLayoutY(dimensions.getHeight() / 2 - dimensions.getHeight() / 12);
-        restartButton.assignIndicator(event -> launch(), fixationLength);
+        restartButton.assignIndicatorUpdatable(event -> launch(), gameContext);
 
         finalScoreText = new Text(0, dimensions.getHeight() / 4, "");
         finalScoreText.setFill(Color.WHITE);
@@ -157,7 +159,7 @@ public class BibouleJump extends AnimationTimer implements GameLifeCycle {
         interactionOverlay = new Rectangle(0, 0, dimensions.getWidth(), dimensions.getHeight());
 
         final EventHandler<Event> movementEvent = (Event event) -> {
-            if (event.getEventType() == MouseEvent.MOUSE_MOVED) {
+            if (event.getEventType() == MouseEvent.MOUSE_MOVED || event.getEventType() == MouseEvent.MOUSE_DRAGGED) {
                 gazeTarget = new Point2D(((MouseEvent) event).getX(), ((MouseEvent) event).getY());
             } else if (event.getEventType() == GazeEvent.GAZE_MOVED) {
                 gazeTarget = new Point2D(((GazeEvent) event).getX(), ((GazeEvent) event).getY());
@@ -165,6 +167,7 @@ public class BibouleJump extends AnimationTimer implements GameLifeCycle {
         };
 
         interactionOverlay.addEventFilter(MouseEvent.MOUSE_MOVED, movementEvent);
+        interactionOverlay.addEventFilter(MouseEvent.MOUSE_DRAGGED, movementEvent);
         interactionOverlay.addEventFilter(GazeEvent.GAZE_MOVED, movementEvent);
         interactionOverlay.setFill(Color.TRANSPARENT);
         foregroundLayer.getChildren().add(interactionOverlay);
@@ -216,7 +219,6 @@ public class BibouleJump extends AnimationTimer implements GameLifeCycle {
         foregroundLayer.getChildren().add(scoreText);
 
         // Menu
-        final int fixationLength = config.getFixationLength();
 
         shade = new Rectangle(0, 0, dimensions.getWidth(), dimensions.getHeight());
         shade.setFill(new Color(0, 0, 0, 0.75));
@@ -228,7 +230,7 @@ public class BibouleJump extends AnimationTimer implements GameLifeCycle {
         restartButton.setImage(restartImage);
         restartButton.setLayoutX(dimensions.getWidth() / 2 - dimensions.getHeight() / 12);
         restartButton.setLayoutY(dimensions.getHeight() / 2 - dimensions.getHeight() / 12);
-        restartButton.assignIndicator(event -> launch(), fixationLength);
+        restartButton.assignIndicatorUpdatable(event -> launch(), gameContext);
 
         finalScoreText = new Text(0, dimensions.getHeight() / 4, "");
         finalScoreText.setFill(Color.WHITE);
@@ -245,7 +247,7 @@ public class BibouleJump extends AnimationTimer implements GameLifeCycle {
         interactionOverlay = new Rectangle(0, 0, dimensions.getWidth(), dimensions.getHeight());
 
         final EventHandler<Event> movementEvent = (Event event) -> {
-            if (event.getEventType() == MouseEvent.MOUSE_MOVED) {
+            if (event.getEventType() == MouseEvent.MOUSE_MOVED || event.getEventType() == MouseEvent.MOUSE_DRAGGED) {
                 gazeTarget = new Point2D(((MouseEvent) event).getX(), ((MouseEvent) event).getY());
             } else if (event.getEventType() == GazeEvent.GAZE_MOVED) {
                 gazeTarget = new Point2D(((GazeEvent) event).getX(), ((GazeEvent) event).getY());
@@ -253,7 +255,9 @@ public class BibouleJump extends AnimationTimer implements GameLifeCycle {
         };
 
         interactionOverlay.addEventFilter(MouseEvent.MOUSE_MOVED, movementEvent);
+        interactionOverlay.addEventFilter(MouseEvent.MOUSE_DRAGGED, movementEvent);
         interactionOverlay.addEventFilter(GazeEvent.GAZE_MOVED, movementEvent);
+
         interactionOverlay.setFill(Color.TRANSPARENT);
         foregroundLayer.getChildren().add(interactionOverlay);
 

@@ -254,18 +254,18 @@ public class CakeFactory extends Parent implements GameLifeCycle {
             final FadeTransition ft = new FadeTransition(Duration.millis(500), randomCake);
             ft.setToValue(1);
             ft.setOnFinished(actionEvent -> {
-                gameContext.updateScore(stats,this);
+                gameContext.updateScore(stats, this);
                 playWin();
             });
             ft.play();
         } else {
             stats.incrementNumberOfGoalsReached();
-            gameContext.updateScore(stats,this);
+            gameContext.updateScore(stats, this);
             playWin();
         }
     }
 
-    private void checkGoodAnswer(){
+    private void checkGoodAnswer() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (layers[i][j] == model[i][j]) {
@@ -414,7 +414,7 @@ public class CakeFactory extends Parent implements GameLifeCycle {
         final SequentialTransition sq = new SequentialTransition();
         sq.getChildren().addAll(pt, pt2);
 
-        final String soundResource = "data/cake/sounds/spray.mp3";
+        final String soundResource = "data/cake/sounds/spray.wav";
         gameContext.getSoundManager().add(soundResource);
 
         sq.setOnFinished(actionEvent -> {
@@ -465,7 +465,7 @@ public class CakeFactory extends Parent implements GameLifeCycle {
             execAnim(i, j);
             winButton(true);
         };
-        bt.assignIndicator(buttonHandler, fixationLength);
+        bt.assignIndicatorUpdatable(buttonHandler, this.gameContext);
         bt.active();
         gameContext.getGazeDeviceManager().addEventFilter(bt.getButton());
         p[j].add(bt);
@@ -495,7 +495,7 @@ public class CakeFactory extends Parent implements GameLifeCycle {
 
             updateBackgroundColor(col[0]);
         };
-        bt.assignIndicator(buttonHandler, fixationLength);
+        bt.assignIndicatorUpdatable(buttonHandler, this.gameContext);
         bt.active();
         gameContext.getGazeDeviceManager().addEventFilter(bt.getButton());
         p[j].add(bt);
@@ -563,7 +563,7 @@ public class CakeFactory extends Parent implements GameLifeCycle {
 
         });
 
-        final String soundResource = "data/cake/sounds/grabcoming.mp3";
+        final String soundResource = "data/cake/sounds/grabcoming.wav";
         gameContext.getSoundManager().add(soundResource);
 
         sq.play();

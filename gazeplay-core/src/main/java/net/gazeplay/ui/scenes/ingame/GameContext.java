@@ -34,10 +34,12 @@ import net.gazeplay.commons.soundsmanager.SoundManager;
 import net.gazeplay.commons.ui.I18NButton;
 import net.gazeplay.commons.ui.Translator;
 import net.gazeplay.commons.utils.*;
+import net.gazeplay.commons.utils.games.BackgroundMusicManager;
 import net.gazeplay.commons.utils.games.ForegroundSoundsUtils;
 import net.gazeplay.commons.utils.stats.Stats;
 import net.gazeplay.components.RandomPositionGenerator;
 import net.gazeplay.ui.AnimationSpeedRatioControl;
+import net.gazeplay.ui.FixationLengthControl;
 import net.gazeplay.ui.GraphicalContext;
 import net.gazeplay.ui.MusicControl;
 import net.gazeplay.ui.scenes.stats.StatsContext;
@@ -230,6 +232,7 @@ public class GameContext extends GraphicalContext<Pane> implements IGameContext 
         Configuration config = ActiveConfigurationContext.getInstance();
         MusicControl musicControl = getMusicControl();
         AnimationSpeedRatioControl animationSpeedRatioControl = AnimationSpeedRatioControl.getInstance();
+        FixationLengthControl fixationLengthControl = FixationLengthControl.getInstance();
 
         GridPane leftControlPane = new GridPane();
         leftControlPane.setHgap(5);
@@ -238,6 +241,7 @@ public class GameContext extends GraphicalContext<Pane> implements IGameContext 
         leftControlPane.add(musicControl.createMusicControlPane(), 0, 0);
         leftControlPane.add(musicControl.createVolumeLevelControlPane(config, gazePlay.getTranslator()), 1, 0);
         leftControlPane.add(animationSpeedRatioControl.createSpeedEffectsPane(config, gazePlay.getTranslator(), gazePlay.getPrimaryScene()), 2, 0);
+        leftControlPane.add(fixationLengthControl.createfixationLengthPane(config, gazePlay.getTranslator(), gazePlay.getPrimaryScene()), 3, 0);
         leftControlPane.getChildren().forEach(node -> {
             GridPane.setVgrow(node, Priority.ALWAYS);
             GridPane.setHgrow(node, Priority.ALWAYS);
@@ -257,6 +261,7 @@ public class GameContext extends GraphicalContext<Pane> implements IGameContext 
         Configuration config = ActiveConfigurationContext.getInstance();
         MusicControl musicControl = getMusicControl();
         AnimationSpeedRatioControl animationSpeedRatioControl = AnimationSpeedRatioControl.getInstance();
+        FixationLengthControl fixationLengthControl = FixationLengthControl.getInstance();
 
         GridPane leftControlPane = new GridPane();
         leftControlPane.setHgap(5);
@@ -265,6 +270,7 @@ public class GameContext extends GraphicalContext<Pane> implements IGameContext 
         leftControlPane.add(musicControl.createMusicControlPane(), 0, 0);
         leftControlPane.add(musicControl.createVolumeLevelControlPane(config, gazePlay.getTranslator()), 1, 0);
         leftControlPane.add(animationSpeedRatioControl.createSpeedEffectsPane(config, gazePlay.getTranslator(), gazePlay.getPrimaryScene()), 2, 0);
+        leftControlPane.add(fixationLengthControl.createfixationLengthPane(config, gazePlay.getTranslator(), gazePlay.getPrimaryScene()), 3, 0);
         leftControlPane.getChildren().forEach(node -> {
             GridPane.setVgrow(node, Priority.ALWAYS);
             GridPane.setHgrow(node, Priority.ALWAYS);
@@ -284,6 +290,7 @@ public class GameContext extends GraphicalContext<Pane> implements IGameContext 
                                                    @NonNull GameLifeCycle currentGame) {
 
         EventHandler<Event> homeEvent = e -> {
+            BackgroundMusicManager.getInstance().stop();
             root.setCursor(Cursor.WAIT); // Change cursor to wait style
             exitGame(stats, gazePlay, currentGame);
             root.setCursor(Cursor.DEFAULT); // Change cursor to default style
